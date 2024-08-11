@@ -1,4 +1,8 @@
 package com.example.aisplitwise
 
-class ReactNativeJSBridgeModule {
+import com.facebook.react.bridge.ReactContextBaseJavaModule
+
+class ReactNativeJSBridgeModule:ReactContextBaseJavaModule() {
+    override fun getName(): String="AISplitWiseReactModule"
+
 }

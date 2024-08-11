@@ -1,6 +1,18 @@
+
+
+plugins {
+    alias libs.plugins.jetbrains.kotlin.android
+
+    alias libs.plugins.google.hilt
+    alias libs.plugins.jetbrains.kotlin.serialization
+//    alias libs.plugins.ksp
+
+
+}
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
+apply plugin: "com.google.devtools.ksp"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -34,10 +46,10 @@ react {
     // bundleConfig = file(../rn-cli.config.js)
     //
     //   The name of the generated asset file containing your JS bundle
-    // bundleAssetName = "MyApplication.android.bundle"
+    // bundleAssetName = "RnAiSplitWise.android.bundle"
     //
     //   The entry file for bundle generation. Default is 'index.android.js' or 'index.js'
-    // entryFile = file("../js/MyApplication.android.js")
+    // entryFile = file("../../index.js")
     //
     //   A list of extra flags to pass to the 'bundle' commands.
     //   See https://github.com/react-native-community/cli/blob/main/docs/commands.md#bundle
@@ -73,8 +85,14 @@ android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "1.5.9"
+    }
 
-    namespace "com.rnaisplitwise"
+    namespace "com.example.aisplitwise"
     defaultConfig {
         applicationId "com.rnaisplitwise"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -113,6 +131,50 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-}
 
+    implementation libs.androidx.core.ktx
+
+    // KotlinX Serialization
+    implementation libs.kotlix.serialization.json
+    implementation libs.kotlix.serialization.core
+
+    // Lifecycle and Compose Libraries
+    implementation libs.androidx.lifecycle.runtime.ktx
+    implementation libs.androidx.activity.compose
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.ui
+    implementation libs.androidx.ui.graphics
+    implementation libs.androidx.ui.tooling.preview
+
+    // Navigation and Material
+    implementation libs.androidx.material3 
+    implementation libs.navigation.compose 
+
+    // Hilt Libraries
+    implementation libs.hilt.android
+    implementation libs.hilt.android.gradle
+    implementation libs.androidx.ui.viewbinding
+    implementation libs.androidx.fragment.ktx
+    ksp libs.hilt.android.compiler 
+    implementation libs.hilt.androidx.navigation.compose
+
+    //Room Libraries
+    implementation libs.androidx.room.runtime
+    annotationProcessor libs.androidx.room.compiler 
+    ksp libs.androidx.room.compiler
+    implementation libs.androidx.room.ktx
+    implementation libs.androidx.room.paging
+
+    // Testing Libraries
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.junit
+    androidTestImplementation libs.androidx.espresso.core
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.ui.test.junit4
+
+    // Debugging Libraries
+    debugImplementation libs.androidx.ui.tooling
+apply plugin: "com.android.application"
+    debugImplementation libs.androidx.ui.test.manifest
+}
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
