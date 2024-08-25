@@ -14,7 +14,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.example.aisplitwise.dashboard.DashBoard
 import com.example.aisplitwise.dashboard.DashboardViewModel
 import com.example.aisplitwise.ui.screens.Screen2
 import kotlinx.serialization.Serializable
@@ -31,7 +30,8 @@ fun NavHostInitializer(navController:NavHostController) {
         composable<Profile> {
             val args = it.toRoute<Profile>()
             val dashBoardViewModel = hiltViewModel<DashboardViewModel>()
-            Screen2(screen2ViewModel = hiltViewModel())
+            Screen2(screen2ViewModel = hiltViewModel(),
+                navController)
 //            DashBoard(args,
 //                dashBoardViewModel)
         }

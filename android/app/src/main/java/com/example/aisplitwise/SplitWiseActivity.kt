@@ -10,7 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
 import androidx.room.Room
 import com.example.aisplitwise.ui.theme.AISplitwiseTheme
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler
@@ -20,14 +23,17 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
+var composeBack=false
 @AndroidEntryPoint
 class SplitWiseActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
+    private lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             MaterialTheme {
-                val navController = rememberNavController()
+                navController = rememberNavController()
 
                 val db = Room.databaseBuilder(
                     applicationContext,
@@ -59,7 +65,9 @@ class SplitWiseActivity : AppCompatActivity(), DefaultHardwareBackBtnHandler {
     }
 
     override fun invokeDefaultOnBackPressed() {
-        TODO("Not yet implemented")
+        if (::navController.isInitialized) {
+            navController.popBackStack()
+        }
     }
 }
 
